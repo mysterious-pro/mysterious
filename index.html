@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr. Sujon Mahmuod</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap');
+
+        :root {
+            --bg: #020205;
+            --neon: #00ff41;
+            --danger: #ff003c;
+            --card-glass: rgba(15, 17, 26, 0.9);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: crosshair;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: #fff;
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+        }
+
+        #matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.35;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .profile-header {
+            text-align: center;
+            padding: 30px 10px;
+            background: var(--card-glass);
+            border: 2px solid var(--neon);
+            border-radius: 20px;
+            box-shadow: 0 0 20px var(--neon), inset 0 0 15px rgba(0, 255, 65, 0.2);
+            margin-bottom: 25px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .profile-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: var(--neon);
+            text-shadow: 0 0 10px var(--neon);
+            letter-spacing: 4px;
+        }
+
+        .sec-title {
+            color: var(--neon);
+            font-family: 'Orbitron', sans-serif;
+            margin: 25px 0 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+        }
+
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .pill-card {
+            background: rgba(0, 255, 65, 0.05);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            padding: 15px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 8px;
+            transition: 0.3s ease;
+            cursor: pointer;
+        }
+
+        .pill-card:hover {
+            background: rgba(0, 255, 65, 0.15);
+            border-color: var(--neon);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 255, 65, 0.3);
+        }
+
+        .pill-card i {
+            color: var(--neon);
+            font-size: 1.5rem;
+        }
+        .pill-card small {
+            font-size: 10px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .pill-card b {
+            font-size: 13px;
+            color: #fff;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 16px;
+            background: rgba(15, 17, 26, 0.8);
+            border: 1px solid var(--neon);
+            border-radius: 12px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 12px;
+            transition: 0.4s;
+        }
+
+        .action-btn:hover {
+            background: var(--neon);
+            color: #000;
+            box-shadow: 0 0 20px var(--neon);
+            transform: scale(1.02);
+        }
+
+        .terminal-box {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 12px;
+            color: var(--neon);
+            height: 120px;
+            overflow: hidden;
+        }
+
+        .quote-box {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px dashed var(--neon);
+            border-radius: 15px;
+            color: var(--neon);
+            font-style: italic;
+        }
+
+        .warning-label {
+            color: var(--danger);
+            text-align: center;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* Premium Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: var(--card-glass);
+            border: 1px solid var(--neon);
+            border-radius: 20px;
+            padding: 30px 25px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 0 30px var(--neon);
+            text-align: center;
+        }
+
+        .modal-content h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon);
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 14px;
+            background: #000;
+            border: 1px solid var(--neon);
+            color: var(--neon);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 16px;
+            border-radius: 8px;
+            outline: none;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .modal-content input::placeholder {
+            color: rgba(0, 255, 65, 0.4);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 12px 25px;
+            border: 1px solid var(--neon);
+            background: transparent;
+            color: var(--neon);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .modal-btn:hover {
+            background: var(--neon);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon);
+        }
+
+        .modal-btn.cancel {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .modal-btn.cancel:hover {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .error-message {
+            color: var(--danger);
+            margin-top: 12px;
+            font-size: 12px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix"></canvas>
+    <div class="container">
+        <div class="profile-header">
+            <p style="font-size: 10px; letter-spacing: 5px;">ANONYMOUS</p>
+            <h1>MYSTERIOUS</h1>
+            <p><b style="color: var(--neon);">Mr. Sujon Mahmuod</b></p>
+        </div>
+        <div class="warning-label"> • ভদ্র শয়তান • </div>
+
+        <!-- CYBER SECURITY Section (formerly Personnel Identity) -->
+        <div class="sec-title"><i class="fas fa-shield-haltered"></i> CYBER SECURITY</div>
+        <div class="grid-layout">
+            <!-- Real Name → Facebook (value stays original) -->
+            <div class="pill-card" onclick="handleFacebookCard()">
+                <i class="fab fa-facebook"></i>
+                <small>Facebook id</small>
+                <b>REPORT</b>
+            </div>
+            <!-- Birth Date → Follow -->
+            <div class="pill-card" onclick="handleFollowCard()">
+                <i class="fab fa-facebook"></i>
+                <small>Facebook id</small>
+                <b>INFORMATION</b>
+            </div>
+            <!-- Religion → Active User (dynamic number) -->
+            <div class="pill-card" onclick="playBeep()">
+                <i class="fas fa-user"></i>
+                <small>Active User</small>
+                <b id="activeUserCount">612</b>
+            </div>
+            <!-- Relationship → Map -->
+            <div class="pill-card" onclick="handleMapCard()">
+                <i class="fas fa-map-marker-alt"></i>
+                <small>Location</small>
+                <b>TRACKING</b>
+            </div>
+            <!-- Blood Group → Like -->
+            <div class="pill-card" onclick="handleLikeCard()">
+                <i class="fab fa-facebook"></i>
+                <small>Facebook Id</small>
+                <b>RECOVERY</b>
+            </div>
+            <!-- Type (Unchanged) -->
+            <div class="pill-card" onclick="playBeep()">
+                <i class="fas fa-user-ninja"></i>
+                <small>Type</small>
+                <b>DARK WEB</b>
+            </div>
+        </div>
+
+        <div class="sec-title"><i class="fas fa-skull"></i> Dark Expertise</div>
+        <div class="grid-layout">
+            <div class="pill-card" onclick="playBeep()">
+                <i class="fas fa-mobile-alt"></i>
+                <small>Expert</small>
+                <b>App Developer</b>
+            </div>
+            <div class="pill-card" onclick="playBeep()">
+                <i class="fas fa-globe"></i>
+                <small>Expert</small>
+                <b>Web Developer</b>
+            </div>
+            <div class="pill-card" onclick="playBeep()">
+                <i class="fas fa-robot"></i>
+                <small>Automation</small>
+                <b>Facbook id killer</b>
+            </div>
+            <div class="pill-card" onclick="playBeep()">
+                <i class="fas fa-terminal"></i>
+                <small>Tool</small>
+                <b>Termux Pro</b>
+            </div>
+            <div class="pill-card" onclick="playBeep()" style="grid-column: span 2;">
+                <i class="fab fa-linux"></i>
+                <small>Main OS</small>
+                <b>Kali Linux Pro User</b>
+            </div>
+        </div>
+
+        <div class="sec-title"><i class="fas fa-microchip"></i> Live </div>
+        <div class="terminal-box" id="term"> > Shell: Kali Linux Initialized...<br> > Real Name: CXOFB (Verified)...<br> > Session: Active. </div>
+
+        <!-- Contact Nodes (Only Facebook Account) -->
+        <div class="sec-title"><i class="fas fa-network-wired"></i> Contact </div>
+        <a href="https://www.facebook.com/profile.php?id=61590399902275" target="_blank" class="action-btn" onclick="playBeep()">
+            <i class="fab fa-facebook-f"></i> Facebook Follow
+        </a>
+
+        <div class="quote-box"> "হ্যাকিং কোনো অপরাধ নয়, হ্যাকিং একটি শিল্প।<br> আর আমি সেই শিল্পের কারিগর।" </div>
+
+        <footer style="text-align: center; color: #444; font-size: 10px; padding: 30px 0;"> CEO: Mr. Sujon Mahmuod © 2026 </footer>
+    </div>
+
+    <audio id="beepSound">
+        <source src="https://www.soundjay.com/buttons/button-50.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const chars = "01HABIBKHAN01";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#0F0";
+            ctx.font = fontSize + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 50);
+
+        function playBeep() {
+            const beep = document.getElementById("beepSound");
+            beep.currentTime = 0;
+            beep.play();
+        }
+
+        // ─── Premium Custom Prompt (async) ───
+        function customPrompt(title, placeholder = "", isSecure = true) {
+            return new Promise((resolve) => {
+                playBeep();
+                // Create overlay
+                const overlay = document.createElement('div');
+                overlay.className = 'modal-overlay';
+
+                const content = document.createElement('div');
+                content.className = 'modal-content';
+
+                const heading = document.createElement('h3');
+                heading.textContent = title;
+                content.appendChild(heading);
+
+                const input = document.createElement('input');
+                input.type = isSecure ? 'password' : 'text';
+                input.placeholder = placeholder;
+                input.setAttribute('autocomplete', 'off');
+                content.appendChild(input);
+
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'error-message';
+                errorMsg.textContent = '❌ Incorrect code. Access denied.';
+                content.appendChild(errorMsg);
+
+                const btnContainer = document.createElement('div');
+                btnContainer.className = 'modal-buttons';
+
+                const submitBtn = document.createElement('button');
+                submitBtn.className = 'modal-btn';
+                submitBtn.textContent = 'SUBMIT';
+                submitBtn.onclick = () => {
+                    const value = input.value.trim();
+                    if (isSecure && value !== SECURITY_CODE) {
+                        errorMsg.style.display = 'block';
+                        input.value = '';
+                        input.focus();
+                        return;
+                    }
+                    cleanup();
+                    resolve(value);
+                };
+
+                const cancelBtn = document.createElement('button');
+                cancelBtn.className = 'modal-btn cancel';
+                cancelBtn.textContent = 'CANCEL';
+                cancelBtn.onclick = () => {
+                    cleanup();
+                    resolve(null);
+                };
+
+                btnContainer.appendChild(submitBtn);
+                btnContainer.appendChild(cancelBtn);
+                content.appendChild(btnContainer);
+                overlay.appendChild(content);
+                document.body.appendChild(overlay);
+
+                // Focus and handle Enter key
+                input.focus();
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') submitBtn.click();
+                });
+
+                function cleanup() {
+                    if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+                }
+            });
+        }
+
+        // ─── Security Code Constant ───
+        const SECURITY_CODE = "51763";
+
+        // ─── Facebook Card (ex-Real Name): Security Code → ID Link ───
+        async function handleFacebookCard() {
+            const code = await customPrompt('🔒 ENTER SECURITY CODE', '••••••••', true);
+            if (code === null) return; // cancelled
+
+            const link = await customPrompt('✅ VERIFIED! ENTER FACEBOOK ID LINK', 'https://facebook.com/...', false);
+            if (link && link.trim() !== '') {
+                alert('✔ Access Granted!\nFacebook ID Link: ' + link.trim());
+                const term = document.getElementById('term');
+                term.innerHTML += "<br> > Facebook ID Link saved: " + link.trim();
+            } else if (link !== null) {
+                alert('⚠ No link entered. Operation cancelled.');
+            }
+        }
+
+        // ─── Follow Card (ex-Birth Date): Security Code ───
+        async function handleFollowCard() {
+            const code = await customPrompt('🔒 ENTER SECURITY CODE TO FOLLOW', '••••••••', true);
+            if (code === null) return;
+            alert('✅ Verified! You are now following.');
+            const term = document.getElementById('term');
+            term.innerHTML += "<br> > Follow request verified & accepted.";
+        }
+
+        // ─── Map Card (ex-Relationship): Security Code → Number ───
+        async function handleMapCard() {
+            const code = await customPrompt('🔒 ENTER SECURITY CODE TO ACCESS MAP', '••••••••', true);
+            if (code === null) return;
+            const number = await customPrompt('✅ VERIFIED! ENTER NUMBER', '+8801XXXXXXXXX', false);
+            if (number && number.trim() !== '') {
+                alert('✔ Location data saved with number: ' + number.trim());
+                const term = document.getElementById('term');
+                term.innerHTML += "<br> > Map number saved: " + number.trim();
+            } else if (number !== null) {
+                alert('⚠ No number entered. Operation cancelled.');
+            }
+        }
+
+        // ─── Like Card (ex-Blood Group): Security Code → Facebook Link ───
+        async function handleLikeCard() {
+            const code = await customPrompt('🔒 ENTER SECURITY CODE TO LIKE', '••••••••', true);
+            if (code === null) return;
+            const fbLink = await customPrompt('✅ VERIFIED! ENTER FACEBOOK LINK', 'https://facebook.com/...', false);
+            if (fbLink && fbLink.trim() !== '') {
+                alert('✔ Like verified! Facebook Link: ' + fbLink.trim());
+                const term = document.getElementById('term');
+                term.innerHTML += "<br> > Like Facebook link saved: " + fbLink.trim();
+            } else if (fbLink !== null) {
+                alert('⚠ No link entered. Operation cancelled.');
+            }
+        }
+
+        // ─── Active User Random Counter (500-700) ───
+        function updateActiveUsers() {
+            const count = Math.floor(Math.random() * 201) + 500;
+            document.getElementById('activeUserCount').textContent = count;
+        }
+        updateActiveUsers();
+        setInterval(updateActiveUsers, 2500);
+
+        // ─── Terminal Live Logs ───
+        const term = document.getElementById('term');
+        const logs = ["> Scanning...", "> Root Access Granted.", "> IP Spoofed.", "> Encryption: AES-256."];
+        setInterval(() => {
+            term.innerHTML += "<br> " + logs[Math.floor(Math.random() * logs.length)];
+            if (term.innerHTML.split('<br>').length > 6) {
+                term.innerHTML = term.innerHTML.split('<br>').slice(1).join('<br>');
+            }
+        }, 2000);
+    </script>
+</body>
+</html>
